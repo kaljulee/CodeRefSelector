@@ -20,7 +20,11 @@ function addRow(doc, position, data) {
 
   // set if control is checked.  this is used later for hiding fields
   presentControl.checked = data.observationId != undefined;
-  console.log(data);
+  presentControl.id = generatePresentControlId(data.id);
+  presentControl.addEventListener('click',   () => {
+      toggleCheckbox(data.id, document);
+    });
+
   row.appendChild(presentControl);
 
   // add label
