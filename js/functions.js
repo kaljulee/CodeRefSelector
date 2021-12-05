@@ -41,6 +41,7 @@ function getObservationData(refId, observs) {
   return response;
 }
 
+// combine code reference and observation data tables
 function zipperData(codeRefs, observs) {
   return codeRefs.reduce((acc, ref) => {
     const {
@@ -84,7 +85,7 @@ function toggleCheckbox(id, doc) {
   } else {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
-    measurement.value = undefined;
-    unit.value = undefined;
+    measurement.value = "";
+    unit.value = "";
   }
 }

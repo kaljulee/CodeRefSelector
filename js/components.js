@@ -38,12 +38,14 @@ function addRow(doc, position, data) {
   // add measurement input
   let measurement = doc.createElement(INPUT);
   measurement.id = generateMeasurementId(data.id);
+  measurement.placeholder = "???"
   measurement.classList.add("measurement");
   row.appendChild(measurement);
 
   // add unit input
   let unit = doc.createElement(INPUT);
   unit.id = generateUnitId(data.id);
+  unit.placeholder = "???"
   unit.classList.add("unit");
   row.appendChild(unit);
   container.appendChild(row);
