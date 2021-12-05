@@ -18,10 +18,10 @@ function generatePresentControlId(rawId) {
 
 ///////////////////////////////////////////
 // UI modifications
-function appendToCodeRefList(doc, data) {
+function appendToCodeRefList(doc, data, units) {
   let container = doc.getElementById("container");
   data.forEach((datum, n) => {
-    addRow(doc, n, datum);
+    addRow(doc, n, datum, units);
   });
 }
 
@@ -90,3 +90,7 @@ function toggleCheckbox(id, doc) {
     unit.value = "";
   }
 }
+
+function onEditMeasurementPause(element) {}
+
+function onEditUnitPause(element) {}

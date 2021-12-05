@@ -2,8 +2,10 @@
 const DIV = "div";
 const INPUT = "input";
 const SPAN = "span";
+const SELECT = "select";
+const OPTION = "option";
 
-function addRow(doc, position, data) {
+function addRow(doc, position, data, units) {
   let row = doc.createElement(DIV);
   let container = doc.getElementById("container");
   row.id = generateRowId(data.id);
@@ -21,9 +23,9 @@ function addRow(doc, position, data) {
   // set if control is checked.  this is used later for hiding fields
   presentControl.checked = data.observationId != undefined;
   presentControl.id = generatePresentControlId(data.id);
-  presentControl.addEventListener('click',   () => {
-      toggleCheckbox(data.id, document);
-    });
+  presentControl.addEventListener('click', () => {
+    toggleCheckbox(data.id, document);
+  });
 
   row.appendChild(presentControl);
 
@@ -42,11 +44,23 @@ function addRow(doc, position, data) {
   measurement.classList.add("measurement");
   row.appendChild(measurement);
 
-  // add unit input
-  let unit = doc.createElement(INPUT);
+  // add unit select
+  let unit = doc.createElement(SELECT);
   unit.id = generateUnitId(data.id);
   unit.placeholder = "???"
   unit.classList.add("unit");
+
+  // populate unit select
+  units.forEach(u => {
+    const {
+      name
+    } = u;
+    let option = doc.createElement(OPTION);
+    option.value = name;
+    option.innerHTML += name;
+    unit.appendChild(option);
+  });
+
   row.appendChild(unit);
   container.appendChild(row);
 
@@ -54,8 +68,7 @@ function addRow(doc, position, data) {
   if (!presentControl.checked) {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
-  }
-  else {
+  } else {
     measurement.value = data.measurement;
     unit.value = data.unit;
   }
