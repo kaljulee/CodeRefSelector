@@ -16,6 +16,8 @@ function addRow(doc, position, data) {
   let presentControl = doc.createElement(INPUT);
   presentControl.setAttribute("type", "checkbox");
   presentControl.classList.add("present-control");
+  presentControl.checked = data.observationId != undefined;
+  console.log(data);
   row.appendChild(presentControl);
   // add label
   let label = doc.createElement(DIV);
@@ -33,4 +35,9 @@ function addRow(doc, position, data) {
   unit.classList.add("unit");
   row.appendChild(unit);
   container.appendChild(row);
+
+  if (!presentControl.checked) {
+    measurement.classList.add("hidden");
+    unit.classList.add("hidden");
+  }
 }
