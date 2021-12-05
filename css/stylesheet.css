@@ -63,8 +63,6 @@ padding-left: 5px;
 /* row column styling */
 .present-control {
   grid-area: present;
-  /* margin-top: auto;
-  margin-bottom: auto; */
   margin: auto;
   height: 100%;
   width: 100%;
