@@ -1,36 +1,41 @@
-const data = [{
+// mock tables
+const CodeReferences = [{
   id: 1,
-  present: false,
   label: "codref 1",
-  measurement: undefined,
-  unit: undefined,
+  class_level_2_id: 1,
 },
 {
   id: 2,
-  present: false,
   label: "some other coderef 2",
-  measurement: undefined,
-  unit: undefined,
+  class_level_2_id: 1,
 },
 {
   id: 3,
-  present: false,
   label: "extra coderef 3derp a derp a derp ipsum ipsum looooorem",
-  measurement: undefined,
-  unit: undefined,
+  class_level_2_id: 2,
 },
 {
   id: 4,
-  present: false,
   label: "coderef 4 double plus",
-  measurement: undefined,
-  unit: undefined,
+  class_level_2_id: 3,
 },];
-console.log("something");
-appendToCodeRefList(document, data);
-// data.forEach((datum) => {
-//   let li = document.createElement("li");
-//   li.innerText = datum.label;
-//   li.id = datum.id;
-//   list.appendChild(li);
-// });
+
+const Observations = [{
+id: 0,
+code_reference_id: 1,
+measurement: 5,
+unit: '%'
+}, {
+  id: 1,
+  code_reference_id: 2,
+  measurement: 10,
+  unit: 'FT',
+}, {
+  id: 3,
+  code_reference_id: 4,
+  measurement: 15,
+  unit: 'sqft',
+}];
+
+const zipperedData = zipperData(CodeReferences, Observations);
+appendToCodeRefList(document, zipperedData);
