@@ -82,6 +82,7 @@ function toggleCheckbox(id, doc) {
   if (presentControl.checked) {
     measurement.classList.remove("hidden");
     unit.classList.remove("hidden");
+    measurement.focus();
   } else {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
