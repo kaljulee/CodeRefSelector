@@ -21,23 +21,22 @@ function generatePresentControlId(rawId) {
 function appendToCodeRefList(doc, data) {
   let container = doc.getElementById("container");
   data.forEach((datum, n) => {
-      addRow(doc, n, datum);
+    addRow(doc, n, datum);
   });
 }
 
 
 /////////////////////////////////////
 // data collection and formatting
-function getObservationData (refId, observs) {
+function getObservationData(refId, observs) {
   let response = {};
   for (let i = 0; i < observs.length; i += 1) {
     console.log('checking ' + observs[i].code_reference_id + ' vs ' + refId);
-    if (observs[i].code_reference_id === refId)
-    {
-    response.observationId = observs[i].id;
-    response.measurement = observs[i].measurement;
-    response.unit = observs[i].unit;
-    break;
+    if (observs[i].code_reference_id === refId) {
+      response.observationId = observs[i].id;
+      response.measurement = observs[i].measurement;
+      response.unit = observs[i].unit;
+      break;
     }
   }
   return response;
@@ -45,10 +44,21 @@ function getObservationData (refId, observs) {
 
 function zipperData(codeRefs, observs) {
   return codeRefs.reduce((acc, ref) => {
-    const { id, label, class_level_2_id} = ref;
-    const output = {id, label, class_level_2_id};
+    const {
+      id,
+      label,
+      class_level_2_id
+    } = ref;
+    const output = {
+      id,
+      label,
+      class_level_2_id
+    };
     const observData = getObservationData(id, observs);
-    acc.push({...output, ...observData});
+    acc.push({
+      ...output,
+      ...observData
+    });
     return acc;
   }, []);
 }
@@ -57,20 +67,25 @@ function zipperData(codeRefs, observs) {
 // interactions
 
 function buttonClicked(elmnt) {
-elmnt.classList.toggle("clicked-button");
+  elmnt.classList.toggle("clicked-button");
 }
 
 function toggleCheckbox(id, doc) {
+  // get row elements
   let presentControl = doc.getElementById(generatePresentControlId(id));
-let measurement = doc.getElementById(generateMeasurementId(id));
-let unit = doc.getElementById(generateUnitId(id));
-if (presentControl.checked) {
-  measurement.classList.remove("hidden");
-  unit.classList.remove("hidden");
-} else {
-  measurement.classList.add("hidden");
-  unit.classList.add("hidden");
-  measurement.value = undefined;
-  unit.value = undefined;
-}
+  let measurement = doc.getElementById(generateMeasurementId(id));
+  let unit = doc.getElementById(generateUnitId(id));
+
+  // make control style changes
+  // if control is checked, make add-observation callback
+  // else make delete-observation calls
+  if (presentControl.checked) {
+    measurement.classList.remove("hidden");
+    unit.classList.remove("hidden");
+  } else {
+    measurement.classList.add("hidden");
+    unit.classList.add("hidden");
+    measurement.value = undefined;
+    unit.value = undefined;
+  }
 }
