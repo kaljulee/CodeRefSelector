@@ -31,7 +31,6 @@ function appendToCodeRefList(doc, data) {
 function getObservationData(refId, observs) {
   let response = {};
   for (let i = 0; i < observs.length; i += 1) {
-    console.log('checking ' + observs[i].code_reference_id + ' vs ' + refId);
     if (observs[i].code_reference_id === refId) {
       response.observationId = observs[i].id;
       response.measurement = observs[i].measurement;
