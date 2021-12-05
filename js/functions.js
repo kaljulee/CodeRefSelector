@@ -19,7 +19,7 @@ function generatePresentControlId(rawId) {
 ///////////////////////////////////////////
 // UI modifications
 function appendToCodeRefList(doc, data, units) {
-  let container = doc.getElementById("container");
+  let container = doc.getElementById("coderef-list");
   data.forEach((datum, n) => {
     addRow(doc, n, datum, units);
   });

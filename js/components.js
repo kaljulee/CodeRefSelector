@@ -7,7 +7,7 @@ const OPTION = "option";
 
 function addRow(doc, position, data, units) {
   let row = doc.createElement(DIV);
-  let container = doc.getElementById("container");
+  let container = doc.getElementById("coderef-list");
   row.id = generateRowId(data.id);
   if (position % 2 === 0) {
     row.classList.add("even-row");
