@@ -21,10 +21,14 @@ function generatePresentControlId(rawId) {
 function appendToCodeRefList(doc, data, units) {
   let container = doc.getElementById("coderef-list");
   data.forEach((datum, n) => {
-    addRow(doc, n, datum, units);
+    addCodeRefRow(doc, n, datum, units);
   });
 }
 
+function appendToObservationList(doc, observs) {
+  let container = doc.getElementById("observation-list");
+  data.forEach((datum, n) => {})
+}
 
 /////////////////////////////////////
 // data collection and formatting
@@ -91,6 +95,38 @@ function toggleCheckbox(id, doc) {
   }
 }
 
-function onEditMeasurementPause(element) {}
+function setSavedDataClass(doc, id) {
+  const element = doc.getElementById(id);
+  element.classList.remove("dirty-data");
+  element.classList.add("saved-data");
+  setTimeout(() => {
+    element.classList.remove("saved-data");
+  }, 1000);
+}
 
-function onEditUnitPause(element) {}
+function saveMeasurement(element) {
+
+}
+
+function saveUnit(element) {
+
+}
+
+function setDirtyDataClass(doc, id) {
+  const element = doc.getElementById(id);
+  if (!element.classList.contains("dirty-data")) {
+    element.classList.add("dirty-data");
+  }
+}
+
+function onEditMeasurement(doc, id) {
+  const element = doc.getElementById(id);
+  setDirtyDataClass(doc, id);
+  setTimeout(() => setSavedDataClass(doc, id), 1000);
+}
+
+function onEditUnit(doc, id) {
+  element = doc.getElementById(id);
+  setDirtyDataClass(doc, id);
+  setTimeout(() => setSavedDataClass(doc, id), 1000);
+}

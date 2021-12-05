@@ -5,7 +5,7 @@ const SPAN = "span";
 const SELECT = "select";
 const OPTION = "option";
 
-function addRow(doc, position, data, units) {
+function addCodeRefRow(doc, position, data, units) {
   let row = doc.createElement(DIV);
   let container = doc.getElementById("coderef-list");
   row.id = generateRowId(data.id);
@@ -41,6 +41,9 @@ function addRow(doc, position, data, units) {
   let measurement = doc.createElement(INPUT);
   measurement.id = generateMeasurementId(data.id);
   measurement.placeholder = "???"
+  measurement.addEventListener("keyup", () => {
+    onEditMeasurement(doc, measurement.id);
+  })
   measurement.classList.add("measurement");
   row.appendChild(measurement);
 
@@ -48,6 +51,9 @@ function addRow(doc, position, data, units) {
   let unit = doc.createElement(SELECT);
   unit.id = generateUnitId(data.id);
   unit.placeholder = "???"
+  unit.addEventListener("change", () => {
+    onEditUnit(doc, unit.id);
+  })
   unit.classList.add("unit");
 
   // populate unit select
