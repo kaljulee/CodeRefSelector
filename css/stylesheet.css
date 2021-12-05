@@ -10,22 +10,38 @@
   --row-font-size: 20px;
 }
 
+
+/* test class */
 .clicked-button {
   color: var(--test-border);
 }
 
+
+/*  major component classes */
 #container {
   height: 100%;
   background: var(--primary-background);
   overflow-y: scroll;
 }
 
-#coderef-list {
-  height: 100%;
-  border: 1px solid var(--test-border);
-  background: var(--primary-background);
+
+/* list column header styling */
+#list-header {
+  height: 25px;
+  font-size: 14;
+  font-weight: bold;
+  border-top: 1px solid var(--secondary-border);
+  border-bottom: 1px solid var(--secondary-border);
 }
 
+.header-cell {
+padding-top: auto;
+display: flex;
+align-items: flex-end;
+padding-left: 5px;
+}
+
+/* row styling */
 .even-row {
   background-color: var(--primary-background);
 }
@@ -43,6 +59,8 @@
   font-size: var(--row-font-size);
 }
 
+
+/* row column styling */
 .present-control {
   grid-area: present;
   /* margin-top: auto;
@@ -72,6 +90,7 @@
   height: 50%;
   margin: auto;
   width: 90%;
+  justify-content: center;
 }
 
 .hidden {
