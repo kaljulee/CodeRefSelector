@@ -12,6 +12,9 @@ function generateUnitId(rawId) {
   return ("unit" + rawId);
 }
 
+function generatePresentControlId(rawId) {
+  return ("presentControl" + rawId);
+}
 
 ///////////////////////////////////////////
 // UI modifications
@@ -58,5 +61,16 @@ elmnt.classList.toggle("clicked-button");
 }
 
 function toggleCheckbox(id, doc) {
-  let list = doc.getElementById();
+  let presentControl = doc.getElementById(generatePresentControlId(id));
+let measurement = doc.getElementById(generateMeasurementId(id));
+let unit = doc.getElementById(generateUnitId(id));
+if (presentControl.checked) {
+  measurement.classList.remove("hidden");
+  unit.classList.remove("hidden");
+} else {
+  measurement.classList.add("hidden");
+  unit.classList.add("hidden");
+  measurement.value = undefined;
+  unit.value = undefined;
+}
 }
