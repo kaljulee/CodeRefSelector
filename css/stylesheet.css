@@ -1,0 +1,79 @@
+:root{
+  --primary-background: #f2f2f2;
+  --primary-border: #f2f2f2;
+  --secondary-background: #cdcdcd;
+  --control-surface: #ffffff;
+  --control-border: #cccccc;
+  --secondary-border: #999999;
+  --test-border: #c241eb;
+  --row-height: 100px;
+  --row-font-size: 20px;
+}
+
+.clicked-button {
+  color: var(--test-border);
+}
+
+#container {
+  height: 100%;
+  background: var(--primary-background);
+  overflow-y: scroll;
+}
+
+#coderef-list {
+  height: 100%;
+  border: 1px solid var(--test-border);
+  background: var(--primary-background);
+}
+
+.even-row {
+  background-color: var(--primary-background);
+}
+
+.odd-row {
+  background-color: var(--secondary-background);
+}
+
+.even-row, .odd-row {
+  height: var(--row-height);
+  display: grid;
+  grid-template-columns: 5% 64% 14% 14%;
+  grid-template-areas: "present label measurement unit";
+  gap: 1%;
+  font-size: var(--row-font-size);
+}
+
+.present-control {
+  grid-area: present;
+  /* margin-top: auto;
+  margin-bottom: auto; */
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  background: orange;
+}
+
+.row-label {
+  padding-left: 10px;
+  grid-area: label;
+  display: flex;
+  align-items: center;
+}
+
+.measurement {
+  grid-area: measurement;
+}
+
+.unit {
+  grid-area: unit;
+}
+
+.measurement, .unit {
+  height: 50%;
+  margin: auto;
+  width: 90%;
+}
+
+.hidden {
+  visibility: hidden;
+}
