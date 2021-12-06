@@ -32,7 +32,7 @@ function clearCodeRefList() {
   }
 }
 
-function filterCodeRefList(data, units) {
+function filterCodeRefList(data) {
   console.log(data);
   const filteredData = data.reduce((acc, datum) => {
     if (datum.id && (parseInt(datum.class_level_2_id) === parseInt(selectedCL2))) {
@@ -41,7 +41,7 @@ function filterCodeRefList(data, units) {
     return acc;
   }, []);
   clearCodeRefList();
-  appendToCodeRefList(globalDoc, filteredData, units);
+  appendToCodeRefList(globalDoc, filteredData, UnitTable);
 }
 
 function appendToObservationList(doc, observs) {
