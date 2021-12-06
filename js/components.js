@@ -79,6 +79,7 @@ function addCodeRefRow(doc, position, data, units) {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
   } else {
+    presentControl.dataset.observationId = data.observationId;
     measurement.value = data.measurement;
     unit.value = data.unit;
   }

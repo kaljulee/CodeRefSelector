@@ -158,8 +158,11 @@ function setUnitTable(data) {
 
 function getObservationData(refId, observs) {
   let response = {};
+  console.log(observs);
   for (let i = 0; i < observs.length; i += 1) {
     if (observs[i].code_reference_id === refId) {
+      console.log('found and observ match');
+      console.log(observs[i]);
       response.observationId = observs[i].id;
       response.measurement = observs[i].measurement;
       response.unit = observs[i].unit;
@@ -245,7 +248,6 @@ function toggleCheckbox(id, doc) {
   if (presentControl.checked) {
     measurement.classList.remove("hidden");
     unit.classList.remove("hidden");
-    measurement.focus();
     FileMaker.PerformScript("create_observation_from_JS", presentControl.dataset.dataId);
   } else {
     measurement.classList.add("hidden");
@@ -253,6 +255,8 @@ function toggleCheckbox(id, doc) {
     measurement.value = "";
     unit.value = "";
     zeroZipperedDatum(presentControl.dataset.dataId);
+
+    FileMaker.PerformScript("delete_observation_from_JS", presentControl.dataset.dataId);
   }
 }
 
