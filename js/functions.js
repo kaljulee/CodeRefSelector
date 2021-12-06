@@ -197,7 +197,7 @@ function initCRSelector(codeRefData, observationData, unitData) {
   setUnitTable(unitData);
   zipperedData = zipperData(CodeReferenceTable, ObservationTable);
   clearCodeRefList();
-  appendToCodeRefList(globalDoc, zipperedData, UnitTable);
+  filterCodeRefList(globalDoc, zipperedData, UnitTable);
 }
 
 function saveMeasurement(id) {
@@ -210,6 +210,11 @@ function saveUnit(id) {
   const element = globalDoc.getElementById(id);
   findZipperedDatum(element.dataset.dataId).unit = element.value;
   setSavedDataClass(id);
+}
+
+function addObservationId(codRefId, observationId) {
+  const datum = findZipperedDatum(codeRefId);
+  datum.observationId = parseInt(observationId);
 }
 
 ///////////////////////////////////////
