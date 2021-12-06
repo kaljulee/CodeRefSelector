@@ -2,6 +2,7 @@
 var globalDoc = document;
 var nodeId = undefined;
 var selectedCL2 = undefined;
+var debug = false;
 
 var CodeReferenceTable = [{
     id: 1,

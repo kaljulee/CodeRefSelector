@@ -125,9 +125,9 @@ function setCodeReferenceTable(data) {
   });
 }
 
-function setObservationTable(data, note_id) {
+function setObservationTable(data) {
   ObservationTable = unwrapFileMakerJSON(data).reduce((acc, datum) => {
-    if (datum.note_id === note_id) {
+    if (parseInt(datum.note_id) === parseInt(noteId)) {
       const {
         id,
         code_reference_id,
@@ -158,11 +158,8 @@ function setUnitTable(data) {
 
 function getObservationData(refId, observs) {
   let response = {};
-  console.log(observs);
   for (let i = 0; i < observs.length; i += 1) {
-    if (observs[i].code_reference_id === refId) {
-      console.log('found and observ match');
-      console.log(observs[i]);
+    if (parseInt(observs[i].code_reference_id) === parseInt(refId)) {
       response.observationId = observs[i].id;
       response.measurement = observs[i].measurement;
       response.unit = observs[i].unit;
@@ -194,11 +191,19 @@ function zipperData(codeRefs, observs) {
   }, []);
 }
 
-function initCRSelector(codeRefData, observationData, unitData) {
+function initCRSelector(codeRefData, observationData, unitData, note_id) {
+  noteId = note_id;
   setCodeReferenceTable(codeRefData);
   setObservationTable(observationData);
   setUnitTable(unitData);
+  if (debug) {
+    FileMaker.PerformScript("save_codeRefData", JSON.stringify(CodeReferenceTable));
+    FileMaker.PerformScript("save_observTable", JSON.stringify(ObservationTable));
+  }
   zipperedData = zipperData(CodeReferenceTable, ObservationTable);
+  if (debug) {
+    FileMaker.PerformScript("save_zipper_data", JSON.stringify(zipperedData));
+  }
   clearCodeRefList();
   filterCodeRefList(globalDoc, zipperedData, UnitTable);
 }
