@@ -70,6 +70,9 @@ function zipperData(codeRefs, observs) {
 ///////////////////////////////////////
 // interactions
 
+let measurementTimeoutId;
+let unitTimeoutId;
+
 function buttonClicked(elmnt) {
   elmnt.classList.toggle("clicked-button");
 }
@@ -119,14 +122,21 @@ function setDirtyDataClass(doc, id) {
   }
 }
 
+// todo these need to cancel existing timouts
 function onEditMeasurement(doc, id) {
+  if (measurementTimeoutId) {
+    clearTimeout(measurementTimeoutId);
+  }
   const element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  setTimeout(() => setSavedDataClass(doc, id), 1000);
+  measurementTimeoutId = setTimeout(() => setSavedDataClass(doc, id), 1000);
 }
 
 function onEditUnit(doc, id) {
+  if (unitTimeoutId) {
+    clearTimeout(unitTimeoutId);
+  }
   element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  setTimeout(() => setSavedDataClass(doc, id), 1000);
+  unitTimeoutId = setTimeout(() => setSavedDataClass(doc, id), 1000);
 }
