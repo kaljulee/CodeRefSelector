@@ -246,6 +246,7 @@ function toggleCheckbox(id, doc) {
     measurement.classList.remove("hidden");
     unit.classList.remove("hidden");
     measurement.focus();
+    FileMaker.PerformScript("create_observation_from_JS", presentControl.dataset.dataId);
   } else {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
