@@ -55,4 +55,4 @@ var UnitTable = [
 ]
 
 var zipperedData = zipperData(CodeReferenceTable, ObservationTable);
-filterCodeRefList(zipperedData, UnitTable);
+filterCodeRefList();

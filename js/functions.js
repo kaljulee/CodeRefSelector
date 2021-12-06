@@ -32,9 +32,8 @@ function clearCodeRefList() {
   }
 }
 
-function filterCodeRefList(data) {
-  console.log(data);
-  const filteredData = data.reduce((acc, datum) => {
+function filterCodeRefList() {
+  const filteredData = zipperedData.reduce((acc, datum) => {
     if (datum.id && (parseInt(datum.class_level_2_id) === parseInt(selectedCL2))) {
       acc.push(datum);
     }
@@ -58,6 +57,7 @@ function setNoteId(id) {
 
 function setSelectedCL2(id) {
   selectedCL2 = id;
+  filterCodeRefList();
 }
 
 function unwrapFileMakerJSON(json) {
@@ -179,7 +179,9 @@ function initCRSelector(codeRefData, observationData, unitData) {
 let measurementTimeoutId;
 let unitTimeoutId;
 
+// debugger ui
 function buttonClicked(elmnt) {
+  setSelectedCL2(2);
   elmnt.classList.toggle("clicked-button");
 }
 
