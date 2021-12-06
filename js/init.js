@@ -1,4 +1,6 @@
 // mock tables
+var globalDoc = document;
+
 var CodeReferenceTable = [{
     id: 1,
     label: "codref 1",
@@ -50,7 +52,5 @@ var UnitTable = [
   {name: "see comments"},
 ]
 
-var someData = ["some", "data"];
-
-const zipperedData = zipperData(CodeReferenceTable, ObservationTable);
+var zipperedData = zipperData(CodeReferenceTable, ObservationTable);
 appendToCodeRefList(document, zipperedData, UnitTable);
