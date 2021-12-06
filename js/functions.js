@@ -32,6 +32,18 @@ function clearCodeRefList() {
   }
 }
 
+function filterCodeRefList(data, units) {
+  console.log(data);
+  const filteredData = data.reduce((acc, datum) => {
+    if (datum.id && (parseInt(datum.class_level_2_id) === parseInt(selectedCL2))) {
+      acc.push(datum);
+    }
+    return acc;
+  }, []);
+  clearCodeRefList();
+  appendToCodeRefList(globalDoc, filteredData, units);
+}
+
 function appendToObservationList(doc, observs) {
   let container = doc.getElementById("observation-list");
   data.forEach((datum, n) => {})
@@ -40,19 +52,44 @@ function appendToObservationList(doc, observs) {
 /////////////////////////////////////
 // data collection and formatting
 
+function setNoteId(id) {
+  noteId = id;
+}
+
+function setSelectedCL2(id) {
+  selectedCL2 = id;
+}
+
 function unwrapFileMakerJSON(json) {
-  return json.response.data.map((datum) => {
-    return datum.fieldData;
-  });
+  let response;
+  let data;
+  try {
+    response = JSON.parse(json).response;
+  } catch(err){
+    alert("bad response from json!!! " + err);
+  }
+  try {
+    data = response.data;
+  } catch (err) {
+    alert("bad data from response!!! " + err + response);
+  }
+  try {
+    response = data.map((datum) => {
+      return datum.fieldData;
+    });
+  } catch (err) {
+    alert("bad data mapping!!! " + err + json);
+  }
+  return response;
 }
 
 function setCodeReferenceTable(data) {
-  CodeReferenceTable = data.map(datum => {
+  CodeReferenceTable = unwrapFileMakerJSON(data).map(datum => {
     const {
       id,
       label,
       class_level_2_id
-    } = unwrapFileMakerJSON(datum);
+    } = datum;
     return {
       id,
       label,
@@ -62,14 +99,14 @@ function setCodeReferenceTable(data) {
 }
 
 function setObservationTable(data, note_id) {
-  ObservationTable = data.reduce((acc, datum) => {
+  ObservationTable = unwrapFileMakerJSON(data).reduce((acc, datum) => {
     if (datum.note_id === note_id) {
       const {
         id,
         code_reference_id,
         measurement,
         unit
-      } = unwrapFileMakerJSON(datum);
+      } = datum;
       acc.push({
         id,
         code_reference_id,
@@ -82,9 +119,13 @@ function setObservationTable(data, note_id) {
 }
 
 function setUnitTable(data) {
-  UnitTable = data.map((datum) => {
-    const { name } = unwrapFileMakerJSON(datum);
-    return { name };
+  UnitTable = unwrapFileMakerJSON(data).map((datum) => {
+    const {
+      name
+    } = datum;
+    return {
+      name
+    };
   });
 }
 
@@ -125,7 +166,7 @@ function zipperData(codeRefs, observs) {
 
 function initCRSelector(codeRefData, observationData, unitData) {
   setCodeReferenceTable(codeRefData);
-  setObservationTable(observData);
+  setObservationTable(observationData);
   setUnitTable(unitData);
   zipperedData = zipperData(CodeReferenceTable, ObservationTable);
   clearCodeRefList();
@@ -139,7 +180,6 @@ let measurementTimeoutId;
 let unitTimeoutId;
 
 function buttonClicked(elmnt) {
-  clearCodeRefList();
   elmnt.classList.toggle("clicked-button");
 }
 

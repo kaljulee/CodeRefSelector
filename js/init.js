@@ -1,5 +1,7 @@
 // mock tables
 var globalDoc = document;
+var nodeId = undefined;
+var selectedCL2 = undefined;
 
 var CodeReferenceTable = [{
     id: 1,
@@ -53,4 +55,4 @@ var UnitTable = [
 ]
 
 var zipperedData = zipperData(CodeReferenceTable, ObservationTable);
-appendToCodeRefList(document, zipperedData, UnitTable);
+filterCodeRefList(zipperedData, UnitTable);
