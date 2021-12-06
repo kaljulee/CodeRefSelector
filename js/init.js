@@ -1,5 +1,5 @@
 // mock tables
-const CodeReferences = [{
+var CodeReferenceTable = [{
     id: 1,
     label: "codref 1",
     class_level_2_id: 1,
@@ -21,7 +21,7 @@ const CodeReferences = [{
   },
 ];
 
-const Observations = [{
+var ObservationTable = [{
     id: 0,
     code_reference_id: 1,
     measurement: 5,
@@ -40,7 +40,7 @@ const Observations = [{
   }
 ];
 
-const Units = [
+var UnitTable = [
   {name: "inches"},
   {name: "meters"},
   {name: "feet"},
@@ -50,5 +50,7 @@ const Units = [
   {name: "see comments"},
 ]
 
-const zipperedData = zipperData(CodeReferences, Observations);
-appendToCodeRefList(document, zipperedData, Units);
+var someData = ["some", "data"];
+
+const zipperedData = zipperData(CodeReferenceTable, ObservationTable);
+appendToCodeRefList(document, zipperedData, UnitTable);

@@ -32,6 +32,48 @@ function appendToObservationList(doc, observs) {
 
 /////////////////////////////////////
 // data collection and formatting
+
+function setCodeReferenceTable(data) {
+  CodeReferenceTable = data.map(datum => {
+    const {
+      id,
+      label,
+      class_level_2_id
+    } = datum;
+    return {
+      id,
+      label,
+      class_level_2_id
+    };
+  });
+}
+
+function ObservationTable(data, note_id) {
+  ObservationTable = data.reduce((acc, datum) => {
+    if (datum.note_id === note_id) {
+      const {
+        id,
+        code_reference_id,
+        measurement,
+        unit
+      } = datum;
+      acc.push({
+        id,
+        code_reference_id,
+        measurement,
+        unit
+      });
+    }
+    return acc;
+  }, []);
+}
+
+function setUnitTable(data) {
+  UnitTable = data.map((datum) => ({
+    name: datum.name
+  }));
+}
+
 function getObservationData(refId, observs) {
   let response = {};
   for (let i = 0; i < observs.length; i += 1) {
@@ -74,6 +116,10 @@ let measurementTimeoutId;
 let unitTimeoutId;
 
 function buttonClicked(elmnt) {
+  console.log(someData);
+  console.log('button');
+  someData = ["other", "data"];
+  console.log(someData);
   elmnt.classList.toggle("clicked-button");
 }
 
