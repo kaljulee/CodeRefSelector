@@ -25,6 +25,13 @@ function appendToCodeRefList(doc, data, units) {
   });
 }
 
+function clearCodeRefList() {
+  let list = globalDoc.getElementById("coderef-list");
+  while (list.lastChild.id !== "list-header") {
+    list.removeChild(list.lastChild);
+  }
+}
+
 function appendToObservationList(doc, observs) {
   let container = doc.getElementById("observation-list");
   data.forEach((datum, n) => {})
@@ -33,13 +40,19 @@ function appendToObservationList(doc, observs) {
 /////////////////////////////////////
 // data collection and formatting
 
+function unwrapFileMakerJSON(json) {
+  return json.response.data.map((datum) => {
+    return datum.fieldData;
+  });
+}
+
 function setCodeReferenceTable(data) {
   CodeReferenceTable = data.map(datum => {
     const {
       id,
       label,
       class_level_2_id
-    } = datum;
+    } = unwrapFileMakerJSON(datum);
     return {
       id,
       label,
@@ -48,7 +61,7 @@ function setCodeReferenceTable(data) {
   });
 }
 
-function ObservationTable(data, note_id) {
+function setObservationTable(data, note_id) {
   ObservationTable = data.reduce((acc, datum) => {
     if (datum.note_id === note_id) {
       const {
@@ -56,7 +69,7 @@ function ObservationTable(data, note_id) {
         code_reference_id,
         measurement,
         unit
-      } = datum;
+      } = unwrapFileMakerJSON(datum);
       acc.push({
         id,
         code_reference_id,
@@ -69,9 +82,10 @@ function ObservationTable(data, note_id) {
 }
 
 function setUnitTable(data) {
-  UnitTable = data.map((datum) => ({
-    name: datum.name
-  }));
+  UnitTable = data.map((datum) => {
+    const { name } = unwrapFileMakerJSON(datum);
+    return { name };
+  });
 }
 
 function getObservationData(refId, observs) {
@@ -109,6 +123,15 @@ function zipperData(codeRefs, observs) {
   }, []);
 }
 
+function initCRSelector(codeRefData, observationData, unitData) {
+  setCodeReferenceTable(codeRefData);
+  setObservationTable(observData);
+  setUnitTable(unitData);
+  zipperedData = zipperData(CodeReferenceTable, ObservationTable);
+  clearCodeRefList();
+  appendToCodeRefList(globalDoc, zipperedData, UnitTable);
+}
+
 ///////////////////////////////////////
 // interactions
 
@@ -116,10 +139,7 @@ let measurementTimeoutId;
 let unitTimeoutId;
 
 function buttonClicked(elmnt) {
-  console.log(someData);
-  console.log('button');
-  someData = ["other", "data"];
-  console.log(someData);
+  clearCodeRefList();
   elmnt.classList.toggle("clicked-button");
 }
 
