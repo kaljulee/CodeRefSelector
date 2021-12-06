@@ -1,5 +1,5 @@
 //////////////////////////////////
-// create row-element id's
+// utils
 function generateRowId(rawId) {
   return "row" + rawId;
 }
@@ -14,6 +14,17 @@ function generateUnitId(rawId) {
 
 function generatePresentControlId(rawId) {
   return ("presentControl" + rawId);
+}
+
+function findZipperedDatum(id) {
+  return zipperedData.find(d => parseInt(d.id) === parseInt(id));
+}
+
+function zeroZipperedDatum(id) {
+  const datum = findZipperedDatum(id);
+  datum.measurement = "";
+  datum.unit = "";
+  datum.observationId = undefined;
 }
 
 ///////////////////////////////////////////
@@ -46,6 +57,22 @@ function filterCodeRefList() {
 function appendToObservationList(doc, observs) {
   let container = doc.getElementById("observation-list");
   data.forEach((datum, n) => {})
+}
+
+function setDirtyDataClass(doc, id) {
+  const element = doc.getElementById(id);
+  if (!element.classList.contains("dirty-data")) {
+    element.classList.add("dirty-data");
+  }
+}
+
+function setSavedDataClass(id) {
+  const element = globalDoc.getElementById(id);
+  element.classList.remove("dirty-data");
+  element.classList.add("saved-data");
+  setTimeout(() => {
+    element.classList.remove("saved-data");
+  }, 1000);
 }
 
 /////////////////////////////////////
@@ -173,6 +200,18 @@ function initCRSelector(codeRefData, observationData, unitData) {
   appendToCodeRefList(globalDoc, zipperedData, UnitTable);
 }
 
+function saveMeasurement(id) {
+  const element = globalDoc.getElementById(id);
+  findZipperedDatum(element.dataset.dataId).measurement = element.value;
+  setSavedDataClass(id);
+}
+
+function saveUnit(id) {
+  const element = globalDoc.getElementById(id);
+  findZipperedDatum(element.dataset.dataId).unit = element.value;
+  setSavedDataClass(id);
+}
+
 ///////////////////////////////////////
 // interactions
 
@@ -211,35 +250,6 @@ function toggleCheckbox(id, doc) {
   }
 }
 
-function setSavedDataClass(id) {
-  const element = globalDoc.getElementById(id);
-  element.classList.remove("dirty-data");
-  element.classList.add("saved-data");
-  setTimeout(() => {
-    element.classList.remove("saved-data");
-  }, 1000);
-}
-
-function saveMeasurement(id) {
-  const element = globalDoc.getElementById(id);
-  findZipperedDatum(element.dataset.dataId).measurement = element.value;
-  setSavedDataClass(id);
-}
-
-function saveUnit(id) {
-  const element = globalDoc.getElementById(id);
-  findZipperedDatum(element.dataset.dataId).unit = element.value;
-  setSavedDataClass(id);
-}
-
-function setDirtyDataClass(doc, id) {
-  const element = doc.getElementById(id);
-  if (!element.classList.contains("dirty-data")) {
-    element.classList.add("dirty-data");
-  }
-}
-
-// todo these need to cancel existing timouts
 function onEditMeasurement(doc, id) {
   if (measurementTimeoutId) {
     clearTimeout(measurementTimeoutId);
@@ -256,15 +266,4 @@ function onEditUnit(doc, id) {
   element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
   unitTimeoutId = setTimeout(() => saveUnit(id), 1000);
-}
-
-function findZipperedDatum(id) {
-  return zipperedData.find(d => parseInt(d.id) === parseInt(id));
-}
-
-function zeroZipperedDatum(id) {
-  const datum = findZipperedDatum(id);
-  datum.measurement = "";
-  datum.unit = "";
-  datum.observationId = undefined;
 }
