@@ -19,6 +19,8 @@ function addCodeRefRow(doc, position, data, units) {
   let presentControl = doc.createElement(INPUT);
   presentControl.setAttribute("type", "checkbox");
   presentControl.classList.add("present-control");
+  // data id is passed so that changes can be saved later
+  presentControl.dataset.dataId = data.id;
 
   // set if control is checked.  this is used later for hiding fields
   presentControl.checked = data.observationId != undefined;
@@ -45,6 +47,7 @@ function addCodeRefRow(doc, position, data, units) {
     onEditMeasurement(doc, measurement.id);
   })
   measurement.classList.add("measurement");
+  measurement.dataset.dataId = data.id;
   row.appendChild(measurement);
 
   // add unit select
@@ -55,6 +58,7 @@ function addCodeRefRow(doc, position, data, units) {
     onEditUnit(doc, unit.id);
   })
   unit.classList.add("unit");
+  unit.dataset.dataId = data.id;
 
   // populate unit select
   units.forEach(u => {

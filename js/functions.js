@@ -65,7 +65,7 @@ function unwrapFileMakerJSON(json) {
   let data;
   try {
     response = JSON.parse(json).response;
-  } catch(err){
+  } catch (err) {
     alert("bad response from json!!! " + err);
   }
   try {
@@ -181,7 +181,11 @@ let unitTimeoutId;
 
 // debugger ui
 function buttonClicked(elmnt) {
-  setSelectedCL2(2);
+  if (selectedCL2 === 1) {
+    setSelectedCL2(2);
+  } else {
+    setSelectedCL2(1)
+  };
   elmnt.classList.toggle("clicked-button");
 }
 
@@ -203,11 +207,12 @@ function toggleCheckbox(id, doc) {
     unit.classList.add("hidden");
     measurement.value = "";
     unit.value = "";
+    zeroZipperedDatum(presentControl.dataset.dataId);
   }
 }
 
-function setSavedDataClass(doc, id) {
-  const element = doc.getElementById(id);
+function setSavedDataClass(id) {
+  const element = globalDoc.getElementById(id);
   element.classList.remove("dirty-data");
   element.classList.add("saved-data");
   setTimeout(() => {
@@ -215,12 +220,16 @@ function setSavedDataClass(doc, id) {
   }, 1000);
 }
 
-function saveMeasurement(element) {
-
+function saveMeasurement(id) {
+  const element = globalDoc.getElementById(id);
+  findZipperedDatum(element.dataset.dataId).measurement = element.value;
+  setSavedDataClass(id);
 }
 
-function saveUnit(element) {
-
+function saveUnit(id) {
+  const element = globalDoc.getElementById(id);
+  findZipperedDatum(element.dataset.dataId).unit = element.value;
+  setSavedDataClass(id);
 }
 
 function setDirtyDataClass(doc, id) {
@@ -237,7 +246,7 @@ function onEditMeasurement(doc, id) {
   }
   const element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  measurementTimeoutId = setTimeout(() => setSavedDataClass(doc, id), 1000);
+  measurementTimeoutId = setTimeout(() => saveMeasurement(id), 1000);
 }
 
 function onEditUnit(doc, id) {
@@ -246,5 +255,16 @@ function onEditUnit(doc, id) {
   }
   element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  unitTimeoutId = setTimeout(() => setSavedDataClass(doc, id), 1000);
+  unitTimeoutId = setTimeout(() => saveUnit(id), 1000);
+}
+
+function findZipperedDatum(id) {
+  return zipperedData.find(d => parseInt(d.id) === parseInt(id));
+}
+
+function zeroZipperedDatum(id) {
+  const datum = findZipperedDatum(id);
+  datum.measurement = "";
+  datum.unit = "";
+  datum.observationId = undefined;
 }
