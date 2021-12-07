@@ -46,6 +46,29 @@ var ObservationTable = [{
   }
 ];
 
+var RemedyTable = [
+  {
+    id: 1,
+    class_level_3_id: 1,
+    label: "do something about 1",
+  },
+  {
+    id: 2,
+    class_level_3_id: 2,
+    label: "do something about 2",
+  },
+  {
+    id: 3,
+    class_level_3_id: 3,
+    label: "do something about 3",
+  },
+  {
+    id: 4,
+    class_level_3_id: 4,
+    label: "do something about 4",
+  },
+];
+
 var UnitTable = [
   {name: "inches"},
   {name: "meters"},
