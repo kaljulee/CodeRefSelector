@@ -211,18 +211,30 @@ function initCRSelector(codeRefData, observationData, unitData, note_id) {
 function saveMeasurement(id) {
   const element = globalDoc.getElementById(id);
   findZipperedDatum(element.dataset.dataId).measurement = element.value;
+  FileMaker.PerformScript("save_measurement", `${element.dataset.observationId},${element.value}`);
   setSavedDataClass(id);
 }
 
 function saveUnit(id) {
   const element = globalDoc.getElementById(id);
   findZipperedDatum(element.dataset.dataId).unit = element.value;
+  FileMaker.PerformScript("save_unit", `${element.dataset.observationId},${element.value}`);
   setSavedDataClass(id);
 }
 
-function addObservationId(codRefId, observationId) {
-  const datum = findZipperedDatum(codeRefId);
+function addObservationId(observationId) {
+  FileMaker.PerformScript("save_new_observation_id", observationId);
+  const datum = findZipperedDatum(parseInt(activeCodeRefId));
   datum.observationId = parseInt(observationId);
+
+  const checkbox = globalDoc.getElementById(generatePresentControlId(activeCodeRefId));
+  const measurement = globalDoc.getElementById(generateMeasurementId(activeCodeRefId));
+  const unit = globalDoc.getElementById(generateUnitId(activeCodeRefId));
+
+  // FileMaker.PerformScript("save_new_observation_id", datum.observationId);
+  checkbox.dataset.observationId = datum.observationId;
+  measurement.dataset.observationId = datum.observationId;
+  unit.dataset.observationId = datum.observationId;
 }
 
 ///////////////////////////////////////
@@ -253,6 +265,7 @@ function toggleCheckbox(id, doc) {
   if (presentControl.checked) {
     measurement.classList.remove("hidden");
     unit.classList.remove("hidden");
+    activeCodeRefId = presentControl.dataset.dataId;
     FileMaker.PerformScript("create_observation_from_JS", presentControl.dataset.dataId);
   } else {
     measurement.classList.add("hidden");

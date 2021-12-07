@@ -81,6 +81,8 @@ function addCodeRefRow(doc, position, data, units) {
   } else {
     presentControl.dataset.observationId = data.observationId;
     measurement.value = data.measurement;
+    measurement.dataset.observationId = data.observationId;
     unit.value = data.unit;
+    unit.dataset.observationId = data.observationId;
   }
 }
