@@ -5,6 +5,7 @@ const SPAN = "span";
 const SELECT = "select";
 const OPTION = "option";
 
+// add row to codeRefList
 function addCodeRefRow(doc, position, data, units) {
   let row = doc.createElement(DIV);
   let container = doc.getElementById("coderef-list");

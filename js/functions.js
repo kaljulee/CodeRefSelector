@@ -1,80 +1,3 @@
-//////////////////////////////////
-// utils
-function generateRowId(rawId) {
-  return "row" + rawId;
-}
-
-function generateMeasurementId(rawId) {
-  return ("measurement" + rawId);
-}
-
-function generateUnitId(rawId) {
-  return ("unit" + rawId);
-}
-
-function generatePresentControlId(rawId) {
-  return ("presentControl" + rawId);
-}
-
-function findZipperedDatum(id) {
-  return zipperedData.find(d => parseInt(d.id) === parseInt(id));
-}
-
-function zeroZipperedDatum(id) {
-  const datum = findZipperedDatum(id);
-  datum.measurement = "";
-  datum.unit = "";
-  datum.observationId = undefined;
-}
-
-///////////////////////////////////////////
-// UI modifications
-function appendToCodeRefList(doc, data, units) {
-  let container = doc.getElementById("coderef-list");
-  data.forEach((datum, n) => {
-    addCodeRefRow(doc, n, datum, units);
-  });
-}
-
-function clearCodeRefList() {
-  let list = globalDoc.getElementById("coderef-list");
-  while (list.lastChild.id !== "list-header") {
-    list.removeChild(list.lastChild);
-  }
-}
-
-function filterCodeRefList() {
-  const filteredData = zipperedData.reduce((acc, datum) => {
-    if (datum.id && (parseInt(datum.class_level_2_id) === parseInt(selectedCL2))) {
-      acc.push(datum);
-    }
-    return acc;
-  }, []);
-  clearCodeRefList();
-  appendToCodeRefList(globalDoc, filteredData, UnitTable);
-}
-
-function appendToObservationList(doc, observs) {
-  let container = doc.getElementById("observation-list");
-  data.forEach((datum, n) => {})
-}
-
-function setDirtyDataClass(doc, id) {
-  const element = doc.getElementById(id);
-  if (!element.classList.contains("dirty-data")) {
-    element.classList.add("dirty-data");
-  }
-}
-
-function setSavedDataClass(id) {
-  const element = globalDoc.getElementById(id);
-  element.classList.remove("dirty-data");
-  element.classList.add("saved-data");
-  setTimeout(() => {
-    element.classList.remove("saved-data");
-  }, 1000);
-}
-
 /////////////////////////////////////
 // data collection and formatting
 
@@ -197,12 +120,12 @@ function initCRSelector(codeRefData, observationData, unitData, note_id) {
   setObservationTable(observationData);
   setUnitTable(unitData);
   if (debug) {
-    FileMaker.PerformScript("save_codeRefData", JSON.stringify(CodeReferenceTable));
-    FileMaker.PerformScript("save_observTable", JSON.stringify(ObservationTable));
+    debug_FileMaker_SaveCodeRefData();
+    debug_FileMaker_SaveObservTable();
   }
   zipperedData = zipperData(CodeReferenceTable, ObservationTable);
   if (debug) {
-    FileMaker.PerformScript("save_zipper_data", JSON.stringify(zipperedData));
+    debug_FileMaker_saveZipperData();
   }
   clearCodeRefList();
   filterCodeRefList(globalDoc, zipperedData, UnitTable);
@@ -211,19 +134,21 @@ function initCRSelector(codeRefData, observationData, unitData, note_id) {
 function saveMeasurement(id) {
   const element = globalDoc.getElementById(id);
   findZipperedDatum(element.dataset.dataId).measurement = element.value;
-  FileMaker.PerformScript("save_measurement", `${element.dataset.observationId},${element.value}`);
+  fileMaker_saveMeasurement(element.dataset.observationId, element.value);
   setSavedDataClass(id);
 }
 
 function saveUnit(id) {
   const element = globalDoc.getElementById(id);
   findZipperedDatum(element.dataset.dataId).unit = element.value;
-  FileMaker.PerformScript("save_unit", `${element.dataset.observationId},${element.value}`);
+  fileMaker_saveUnit(element.dataset.observationId, element.value);
   setSavedDataClass(id);
 }
 
 function addObservationId(observationId) {
-  FileMaker.PerformScript("save_new_observation_id", observationId);
+  if (debug) {
+    debug_FileMaker_saveNewObservationId(observationId);
+  }
   const datum = findZipperedDatum(parseInt(activeCodeRefId));
   datum.observationId = parseInt(observationId);
 
@@ -231,67 +156,7 @@ function addObservationId(observationId) {
   const measurement = globalDoc.getElementById(generateMeasurementId(activeCodeRefId));
   const unit = globalDoc.getElementById(generateUnitId(activeCodeRefId));
 
-  // FileMaker.PerformScript("save_new_observation_id", datum.observationId);
   checkbox.dataset.observationId = datum.observationId;
   measurement.dataset.observationId = datum.observationId;
   unit.dataset.observationId = datum.observationId;
-}
-
-///////////////////////////////////////
-// interactions
-
-let measurementTimeoutId;
-let unitTimeoutId;
-
-// debugger ui
-function buttonClicked(elmnt) {
-  if (selectedCL2 === 1) {
-    setSelectedCL2(2);
-  } else {
-    setSelectedCL2(1)
-  };
-  elmnt.classList.toggle("clicked-button");
-}
-
-function toggleCheckbox(id, doc) {
-  // get row elements
-  let presentControl = doc.getElementById(generatePresentControlId(id));
-  let measurement = doc.getElementById(generateMeasurementId(id));
-  let unit = doc.getElementById(generateUnitId(id));
-
-  // make control style changes
-  // if control is checked, make add-observation callback
-  // else make delete-observation calls
-  if (presentControl.checked) {
-    measurement.classList.remove("hidden");
-    unit.classList.remove("hidden");
-    activeCodeRefId = presentControl.dataset.dataId;
-    FileMaker.PerformScript("create_observation_from_JS", presentControl.dataset.dataId);
-  } else {
-    measurement.classList.add("hidden");
-    unit.classList.add("hidden");
-    measurement.value = "";
-    unit.value = "";
-    zeroZipperedDatum(presentControl.dataset.dataId);
-
-    FileMaker.PerformScript("delete_observation_from_JS", presentControl.dataset.dataId);
-  }
-}
-
-function onEditMeasurement(doc, id) {
-  if (measurementTimeoutId) {
-    clearTimeout(measurementTimeoutId);
-  }
-  const element = doc.getElementById(id);
-  setDirtyDataClass(doc, id);
-  measurementTimeoutId = setTimeout(() => saveMeasurement(id), 1000);
-}
-
-function onEditUnit(doc, id) {
-  if (unitTimeoutId) {
-    clearTimeout(unitTimeoutId);
-  }
-  element = doc.getElementById(id);
-  setDirtyDataClass(doc, id);
-  unitTimeoutId = setTimeout(() => saveUnit(id), 1000);
 }
