@@ -102,11 +102,11 @@ height: 50%;
 }
 
 .dirty-data {
-  border: 2px solid red !important;
+  border: 2px solid #fd1c03 !important;
 }
 
 .saved-data {
-  border: 4px solid green !important;
+  border: 2px solid #39ff14 !important;
 }
 
 textarea:focus, input:focus, select:focus {
