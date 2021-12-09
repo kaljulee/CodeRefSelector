@@ -147,8 +147,9 @@ function zipperData(codeRefs, observs) {
   }, []);
 }
 
-function initCRSelector(codeRefData, observationData, unitData, remedyData, note_id) {
+function initCRSelector(codeRefData, observationData, unitData, remedyData, note_id, cl2_id) {
   noteId = note_id;
+  selectedCL2 = cl2_id;
   if (debug) {
     debug_FileMaker_gotToPosition(1);
   }
