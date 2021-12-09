@@ -79,7 +79,7 @@ function addCodeRefRow(doc, position, data, units) {
   let remedy = doc.createElement(TEXTAREA);
   remedy.id = generateRemedyId(data.id);
   remedy.value = data.remedy;
-  remedy.addEventListener("change", () => {
+  remedy.addEventListener("input", () => {
     onEditRemedy(remedy.id);
   })
   remedy.classList.add("remedy");
