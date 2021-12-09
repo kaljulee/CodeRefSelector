@@ -79,6 +79,24 @@ function setUnitTable(data) {
   });
 }
 
+function setRemedyTable(data) {
+  RemedyTable = unwrapFileMakerJSON(data).map((datum) => {
+    const {
+      class_level_3_id,
+      id,
+      label
+    } = datum;
+    return {
+      id,
+      label,
+      class_level_3_id
+    };
+  });
+  if (debug) {
+    debug_FileMaker_saveRemedyTable(RemedyTable);
+  }
+}
+
 function getObservationData(refId, observs) {
   let response = {};
   for (let i = 0; i < observs.length; i += 1) {
@@ -90,6 +108,19 @@ function getObservationData(refId, observs) {
     }
   }
   return response;
+}
+
+function getRemedyData(refId) {
+  if (debug) {
+    debug_FileMaker_gotToPosition(refId);
+  }
+  const remedy = RemedyTable.find(r => parseInt(r.class_level_3_id) === parseInt(refId));
+  if (debug) {
+    debug_FileMaker_saveFoundRemedy(remedy);
+  }
+  return {
+    remedy: remedy.label
+  };
 }
 
 // combine code reference and observation data tables
@@ -106,19 +137,25 @@ function zipperData(codeRefs, observs) {
       class_level_2_id
     };
     const observData = getObservationData(id, observs);
+    const remedyData = getRemedyData(id);
     acc.push({
       ...output,
-      ...observData
+      ...observData,
+      ...remedyData,
     });
     return acc;
   }, []);
 }
 
-function initCRSelector(codeRefData, observationData, unitData, note_id) {
+function initCRSelector(codeRefData, observationData, unitData, remedyData, note_id) {
   noteId = note_id;
+  if (debug) {
+    debug_FileMaker_gotToPosition(1);
+  }
   setCodeReferenceTable(codeRefData);
   setObservationTable(observationData);
   setUnitTable(unitData);
+  setRemedyTable(remedyData);
   if (debug) {
     debug_FileMaker_SaveCodeRefData();
     debug_FileMaker_SaveObservTable();
@@ -145,6 +182,17 @@ function saveUnit(id) {
   setSavedDataClass(id);
 }
 
+function saveRemedy(id) {
+  const element = globalDoc.getElementById(id);
+  const {
+    dataset,
+    value
+  } = element;
+  findZipperedDatum(dataset.dataId).remedy = element.value;
+  fileMaker_saveRemedy(dataset.observationId, value);
+  setSavedDataClass(id);
+}
+
 function addObservationId(observationId) {
   if (debug) {
     debug_FileMaker_saveNewObservationId(observationId);
@@ -155,8 +203,10 @@ function addObservationId(observationId) {
   const checkbox = globalDoc.getElementById(generatePresentControlId(activeCodeRefId));
   const measurement = globalDoc.getElementById(generateMeasurementId(activeCodeRefId));
   const unit = globalDoc.getElementById(generateUnitId(activeCodeRefId));
+  const remedy = globalDoc.getElementById(generateRemedyId(activeCodeRefId));
 
   checkbox.dataset.observationId = datum.observationId;
   measurement.dataset.observationId = datum.observationId;
   unit.dataset.observationId = datum.observationId;
+  remedy.dataset.observationId = datum.observationId;
 }

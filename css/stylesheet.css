@@ -6,8 +6,8 @@
   --control-border: #cccccc;
   --secondary-border: #999999;
   --test-border: #c241eb;
-  --row-height: 100px;
-  --row-font-size: 20px;
+  --row-height: 40px;
+  --row-font-size: 14px;
 }
 
 
@@ -24,23 +24,6 @@
   overflow-y: scroll;
 }
 
-
-/* list column header styling */
-#list-header {
-  height: 25px;
-  font-size: 14;
-  font-weight: bold;
-  border-top: 1px solid var(--secondary-border);
-  border-bottom: 1px solid var(--secondary-border);
-}
-
-.header-cell {
-padding-top: auto;
-display: flex;
-align-items: flex-end;
-padding-left: 5px;
-}
-
 /* row styling */
 .even-row {
   background-color: var(--primary-background);
@@ -53,8 +36,8 @@ padding-left: 5px;
 .even-row, .odd-row {
   height: var(--row-height);
   display: grid;
-  grid-template-columns: 5% 64% 14% 14%;
-  grid-template-areas: "present label measurement unit";
+  grid-template-columns: 5% 34% 8% 8% 41%;
+  grid-template-areas: "present label measurement unit remedy";
   gap: 1%;
   font-size: var(--row-font-size);
 }
@@ -76,6 +59,13 @@ padding-left: 5px;
   align-items: center;
 }
 
+.measurement, .unit, .remedy {
+  height: 50%;
+  margin: auto;
+  width: 90%;
+  justify-content: center;
+}
+
 .measurement {
   grid-area: measurement;
 }
@@ -84,11 +74,26 @@ padding-left: 5px;
   grid-area: unit;
 }
 
-.measurement, .unit {
-  height: 50%;
-  margin: auto;
-  width: 90%;
-  justify-content: center;
+.remedy {
+  grid-area: remedy;
+  resize: none;
+  height: 90%;
+}
+
+/* list column header styling */
+#list-header {
+  height: 25px;
+  font-size: 14;
+  font-weight: bold;
+  border-top: 1px solid var(--secondary-border);
+  border-bottom: 1px solid var(--secondary-border);
+}
+
+.header-cell {
+display: flex;
+align-items: flex-end;
+padding-left: 5px;
+height: 50%;
 }
 
 /* utility */

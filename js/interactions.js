@@ -3,6 +3,8 @@
 
 let measurementTimeoutId;
 let unitTimeoutId;
+let remedyTimeoutId;
+const saveDelay = 500;
 
 // debugger ui
 function buttonClicked(elmnt) {
@@ -19,6 +21,7 @@ function toggleCheckbox(id, doc) {
   let presentControl = doc.getElementById(generatePresentControlId(id));
   let measurement = doc.getElementById(generateMeasurementId(id));
   let unit = doc.getElementById(generateUnitId(id));
+  let remedy = doc.getElementById(generateRemedyId(id));
 
   // make control style changes
   // if control is checked, make add-observation callback
@@ -26,11 +29,14 @@ function toggleCheckbox(id, doc) {
   if (presentControl.checked) {
     measurement.classList.remove("hidden");
     unit.classList.remove("hidden");
+    remedy.classList.remove("hidden");
     activeCodeRefId = presentControl.dataset.dataId;
+    remedy.value = getRemedyData(activeCodeRefId).remedy;
     fileMaker_createObservation(presentControl.dataset.dataId);
   } else {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
+    remedy.classList.add("hidden");
     measurement.value = "";
     unit.value = "";
     zeroZipperedDatum(presentControl.dataset.dataId);
@@ -44,7 +50,7 @@ function onEditMeasurement(doc, id) {
   }
   const element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  measurementTimeoutId = setTimeout(() => saveMeasurement(id), 1000);
+  measurementTimeoutId = setTimeout(() => saveMeasurement(id), saveDelay);
 }
 
 function onEditUnit(doc, id) {
@@ -53,5 +59,16 @@ function onEditUnit(doc, id) {
   }
   element = doc.getElementById(id);
   setDirtyDataClass(doc, id);
-  unitTimeoutId = setTimeout(() => saveUnit(id), 1000);
+  unitTimeoutId = setTimeout(() => saveUnit(id), saveDelay);
+}
+
+function onEditRemedy(id) {
+  if (remedyTimeoutId) {
+    clearTimeout(remedyTimeoutId);
+  }
+  element = globalDoc.getElementById(id);
+  setDirtyDataClass(globalDoc, id);
+  remedyTimeoutId = setTimeout(() => {
+    saveRemedy(id);
+  }, saveDelay);
 }

@@ -4,6 +4,7 @@ const INPUT = "input";
 const SPAN = "span";
 const SELECT = "select";
 const OPTION = "option";
+const TEXTAREA = "textarea";
 
 // add row to codeRefList
 function addCodeRefRow(doc, position, data, units) {
@@ -73,17 +74,31 @@ function addCodeRefRow(doc, position, data, units) {
   });
 
   row.appendChild(unit);
+
+  // todo make a function to do this
+  let remedy = doc.createElement(TEXTAREA);
+  remedy.id = generateRemedyId(data.id);
+  remedy.value = data.remedy;
+  remedy.addEventListener("change", () => {
+    onEditRemedy(remedy.id);
+  })
+  remedy.classList.add("remedy");
+  remedy.dataset.dataId = data.id;
+  row.appendChild(remedy);
+
   container.appendChild(row);
 
   // either hide inputs or set values
   if (!presentControl.checked) {
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
+    remedy.classList.add("hidden");
   } else {
     presentControl.dataset.observationId = data.observationId;
     measurement.value = data.measurement;
     measurement.dataset.observationId = data.observationId;
     unit.value = data.unit;
     unit.dataset.observationId = data.observationId;
+    remedy.dataset.observationId = data.observationId;
   }
 }

@@ -16,6 +16,15 @@ function fileMaker_saveUnit(observationId, value) {
     FileMaker.PerformScript("save_unit", `${observationId},${value}`);
   } catch (err) {
     printFileMakerError(err);
+    console.log()
+  }
+}
+
+function fileMaker_saveRemedy(observationId, value) {
+  try {
+    FileMaker.PerformScript("save_remedy", `${observationId},${value}`);
+  } catch (err) {
+    printFileMakerError(err);
   }
 }
 
@@ -37,6 +46,15 @@ function fileMaker_deleteObservation(codeRefId) {
 
 ////////////////////////////////////////////
 // filemaker debugger functions
+
+function debug_FileMaker_gotToPosition(position) {
+  try {
+    FileMaker.PerformScript("save_position", position);
+  } catch (err) {
+    printFileMakerError(err);
+  }
+}
+
 function debug_FileMaker_SaveCodeRefData() {
   try {
     FileMaker.PerformScript("save_codeRefData", JSON.stringify(CodeReferenceTable));
@@ -64,6 +82,22 @@ function debug_FileMaker_saveZipperData() {
 function debug_FileMaker_saveNewObservationId(observationId) {
   try {
     FileMaker.PerformScript("save_new_observation_id", observationId);
+  } catch (err) {
+    printFileMakerError(err);
+  }
+}
+
+function debug_FileMaker_saveRemedyTable() {
+  try {
+    FileMaker.PerformScript("save_remedy_table", JSON.stringify(RemedyTable));
+  } catch (err) {
+    printFileMakerError(err);
+  }
+}
+
+function debug_FileMaker_saveFoundRemedy(remedy) {
+  try {
+    filemaker.PerformScript("save_found_remedy",JSON.stringify(remedy));
   } catch (err) {
     printFileMakerError(err);
   }

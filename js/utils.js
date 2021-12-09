@@ -16,6 +16,10 @@ function generatePresentControlId(rawId) {
   return ("presentControl" + rawId);
 }
 
+function generateRemedyId(rawId) {
+  return ("remedy" + rawId);
+}
+
 function findZipperedDatum(id) {
   return zipperedData.find(d => parseInt(d.id) === parseInt(id));
 }
