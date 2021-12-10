@@ -10,6 +10,11 @@
   --row-font-size: 14px;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--primary-background);
+}
 
 /* test class */
 .clicked-button {
@@ -87,6 +92,14 @@
   font-weight: bold;
   border-top: 1px solid var(--secondary-border);
   border-bottom: 1px solid var(--secondary-border);
+}
+
+#save-button {
+  align-self: flex-end;
+  color: green;
+  border: 1px solid green;
+  width: 100px;
+  height: 30px;
 }
 
 .header-cell {

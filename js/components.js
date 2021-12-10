@@ -50,6 +50,7 @@ function addCodeRefRow(doc, position, data, units) {
   })
   measurement.classList.add("measurement");
   measurement.dataset.dataId = data.id;
+  measurement.dataset.field = "measurement";
   row.appendChild(measurement);
 
   // add unit select
@@ -61,7 +62,7 @@ function addCodeRefRow(doc, position, data, units) {
   })
   unit.classList.add("unit");
   unit.dataset.dataId = data.id;
-
+  unit.dataset.field = "unit";
   // populate unit select
   units.forEach(u => {
     const {
@@ -84,6 +85,7 @@ function addCodeRefRow(doc, position, data, units) {
   })
   remedy.classList.add("remedy");
   remedy.dataset.dataId = data.id;
+  remedy.dataset.field = "remedy_text";
   row.appendChild(remedy);
 
   container.appendChild(row);
@@ -100,5 +102,6 @@ function addCodeRefRow(doc, position, data, units) {
     unit.value = data.unit;
     unit.dataset.observationId = data.observationId;
     remedy.dataset.observationId = data.observationId;
+    applyDirtyDataStyling();
   }
 }
