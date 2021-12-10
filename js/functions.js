@@ -138,7 +138,7 @@ function zipperData(codeRefs, observs) {
     const output = {
       id,
       label,
-      class_level_2_id
+      class_level_2_id,
     };
     const observData = getObservationData(id, observs);
     const remedyData = getRemedyData(id);

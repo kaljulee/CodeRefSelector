@@ -32,13 +32,9 @@ function toggleCheckbox(id, doc) {
     remedy.classList.remove("hidden");
     activeCodeRefId = presentControl.dataset.dataId;
     remedy.value = getRemedyData(activeCodeRefId).remedy;
+    unit.value = "";
     fileMaker_createObservation(presentControl.dataset.dataId);
   } else {
-    /////////////////////////////////
-    /////////////////////////////////
-    // todo dirty data needs to be cleaned up on uncheck
-    ////////////////////////////////
-    ////////////////////////////////
     measurement.classList.add("hidden");
     unit.classList.add("hidden");
     remedy.classList.add("hidden");
