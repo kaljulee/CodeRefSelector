@@ -60,3 +60,11 @@ function clearDirtyDataStyling() {
     element.classList.remove("dirty-data");
   });
 }
+
+function hideLoading() {
+  globalDoc.getElementById("loading").classList.add("hidden");
+}
+
+function showLoading() {
+  globalDoc.getElementById("loading").classList.remove("hidden");
+}

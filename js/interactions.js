@@ -68,6 +68,7 @@ function onEditRemedy(id) {
 }
 
 function onSaveButtonClick() {
+  showLoading();
   const keys = Object.keys(dirtyData);
   const exportString = keys.reduce((acc, key, i) => {
     acc.push(`${key}@obsfield-value@${dirtyData[key].value}`);

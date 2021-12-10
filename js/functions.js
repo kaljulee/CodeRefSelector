@@ -171,6 +171,7 @@ function initCRSelector(codeRefData, observationData, unitData, remedyData, note
   }
   clearCodeRefList();
   filterCodeRefList(globalDoc, zipperedData, UnitTable);
+  hideLoading();
 }
 
 function saveMeasurement(id) {
