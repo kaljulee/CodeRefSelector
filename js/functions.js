@@ -56,13 +56,15 @@ function setObservationTable(data) {
         id,
         code_reference_id,
         measurement,
-        unit
+        unit,
+        remedy_text
       } = datum;
       acc.push({
         id,
         code_reference_id,
         measurement,
-        unit
+        unit,
+        remedy_text
       });
     }
     return acc;
@@ -105,6 +107,7 @@ function getObservationData(refId, observs) {
       response.observationId = observs[i].id;
       response.measurement = observs[i].measurement;
       response.unit = observs[i].unit;
+      response.remedy = observs[i].remedy_text;
       break;
     }
   }
@@ -141,8 +144,8 @@ function zipperData(codeRefs, observs) {
     const remedyData = getRemedyData(id);
     acc.push({
       ...output,
-      ...observData,
       ...remedyData,
+      ...observData,
     });
     return acc;
   }, []);
