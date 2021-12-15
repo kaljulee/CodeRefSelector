@@ -46,3 +46,25 @@ function setSavedDataClass(id) {
     element.classList.remove("saved-data");
   }, 1000);
 }
+
+function applyDirtyDataStyling() {
+  Object.keys(dirtyData).forEach(key => {
+    const element = globalDoc.getElementById(dirtyData[key].elementId);
+    element.classList.add("dirty-data");
+  });
+}
+
+function clearDirtyDataStyling() {
+  Object.keys(dirtyData).forEach(key => {
+    const element = globalDoc.getElementById(dirtyData[key].elementId);
+    element.classList.remove("dirty-data");
+  });
+}
+
+function hideLoading() {
+  globalDoc.getElementById("loading").classList.add("hidden");
+}
+
+function showLoading() {
+  globalDoc.getElementById("loading").classList.remove("hidden");
+}

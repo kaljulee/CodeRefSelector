@@ -7,6 +7,7 @@ function setNoteId(id) {
 
 function setSelectedCL2(id) {
   selectedCL2 = id;
+  clearDirtyData();
   filterCodeRefList();
 }
 
@@ -55,13 +56,15 @@ function setObservationTable(data) {
         id,
         code_reference_id,
         measurement,
-        unit
+        unit,
+        remedy_text
       } = datum;
       acc.push({
         id,
         code_reference_id,
         measurement,
-        unit
+        unit,
+        remedy_text
       });
     }
     return acc;
@@ -104,6 +107,7 @@ function getObservationData(refId, observs) {
       response.observationId = observs[i].id;
       response.measurement = observs[i].measurement;
       response.unit = observs[i].unit;
+      response.remedy = observs[i].remedy_text;
       break;
     }
   }
@@ -134,14 +138,14 @@ function zipperData(codeRefs, observs) {
     const output = {
       id,
       label,
-      class_level_2_id
+      class_level_2_id,
     };
     const observData = getObservationData(id, observs);
     const remedyData = getRemedyData(id);
     acc.push({
       ...output,
-      ...observData,
       ...remedyData,
+      ...observData,
     });
     return acc;
   }, []);
@@ -167,6 +171,7 @@ function initCRSelector(codeRefData, observationData, unitData, remedyData, note
   }
   clearCodeRefList();
   filterCodeRefList(globalDoc, zipperedData, UnitTable);
+  hideLoading();
 }
 
 function saveMeasurement(id) {
@@ -194,6 +199,7 @@ function saveRemedy(id) {
   setSavedDataClass(id);
 }
 
+// add observation id to controls
 function addObservationId(observationId) {
   if (debug) {
     debug_FileMaker_saveNewObservationId(observationId);
@@ -210,4 +216,33 @@ function addObservationId(observationId) {
   measurement.dataset.observationId = datum.observationId;
   unit.dataset.observationId = datum.observationId;
   remedy.dataset.observationId = datum.observationId;
+}
+
+// update the data updates when changes are applied to a field
+function onEditField(elementId, codeRefId, observationId, field, value) {
+  const key = `${observationId}@obs-field@${field}`;
+  if (!dirtyData[key]) {
+    dirtyData[key] = {elementId, codeRefId};
+  }
+  dirtyData[key].value = value;
+  console.log(dirtyData);
+};
+
+// when an observation is deleted, it's data changes should be removed
+// from the list
+function removeObservationFromDirtyData(codeRefId) {
+  const keys = Object.keys(dirtyData);
+  keys.forEach(k => {
+    if (dirtyData[key].codeRefId === codeRefId) {
+      dirtyData[key] = undefined;
+    }
+  });
+}
+
+function findDirtyData(codeRefId) {
+
+}
+
+function clearDirtyData() {
+  dirtyData = {};
 }

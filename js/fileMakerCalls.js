@@ -44,6 +44,15 @@ function fileMaker_deleteObservation(codeRefId) {
   }
 }
 
+function fileMaker_saveObservationChanges(exportString) {
+  try {
+    FileMaker.PerformScript("save_observation_changes", exportString);
+    clearDirtyDataStyling();
+    clearDirtyData();
+  } catch (err) {
+    printFileMakerError(err);
+  }
+}
 ////////////////////////////////////////////
 // filemaker debugger functions
 

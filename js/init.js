@@ -4,6 +4,7 @@ var nodeId = undefined;
 var selectedCL2 = undefined;
 var activeCodeRefId;
 var debug = false;
+var dirtyData = {};
 
 var CodeReferenceTable = [{
     id: 1,

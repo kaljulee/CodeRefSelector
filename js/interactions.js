@@ -32,6 +32,7 @@ function toggleCheckbox(id, doc) {
     remedy.classList.remove("hidden");
     activeCodeRefId = presentControl.dataset.dataId;
     remedy.value = getRemedyData(activeCodeRefId).remedy;
+    unit.value = "";
     fileMaker_createObservation(presentControl.dataset.dataId);
   } else {
     measurement.classList.add("hidden");
@@ -39,36 +40,39 @@ function toggleCheckbox(id, doc) {
     remedy.classList.add("hidden");
     measurement.value = "";
     unit.value = "";
+    removeObservationFromDirtyData(activeCodeRefId);
     zeroZipperedDatum(presentControl.dataset.dataId);
     fileMaker_deleteObservation(presentControl.dataset.dataId);
   }
 }
 
 function onEditMeasurement(doc, id) {
-  if (measurementTimeoutId) {
-    clearTimeout(measurementTimeoutId);
-  }
   const element = doc.getElementById(id);
+  const dataset = element.dataset;
+  onEditField(id, dataset.dataId, dataset.observationId, dataset.field, element.value);
   setDirtyDataClass(doc, id);
-  measurementTimeoutId = setTimeout(() => saveMeasurement(id), saveDelay);
 }
 
 function onEditUnit(doc, id) {
-  if (unitTimeoutId) {
-    clearTimeout(unitTimeoutId);
-  }
   element = doc.getElementById(id);
+  const dataset = element.dataset;
+  onEditField(id, dataset.dataId, dataset.observationId, dataset.field, element.value);
   setDirtyDataClass(doc, id);
-  unitTimeoutId = setTimeout(() => saveUnit(id), saveDelay);
 }
 
 function onEditRemedy(id) {
-  if (remedyTimeoutId) {
-    clearTimeout(remedyTimeoutId);
-  }
   element = globalDoc.getElementById(id);
+  const dataset = element.dataset;
+  onEditField(id, dataset.dataId, dataset.observationId, dataset.field, element.value);
   setDirtyDataClass(globalDoc, id);
-  remedyTimeoutId = setTimeout(() => {
-    saveRemedy(id);
-  }, saveDelay);
+}
+
+function onSaveButtonClick() {
+  showLoading();
+  const keys = Object.keys(dirtyData);
+  const exportString = keys.reduce((acc, key, i) => {
+    acc.push(`${key}@obsfield-value@${dirtyData[key].value}`);
+    return acc;}, []);
+    console.log(exportString);
+    fileMaker_saveObservationChanges(exportString);
 }
