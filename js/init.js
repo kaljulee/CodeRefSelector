@@ -8,22 +8,22 @@ var dirtyData = {};
 
 var CodeReferenceTable = [{
     id: 1,
-    label: "codref 1",
+    label: "no snacks are present",
     class_level_2_id: 1,
   },
   {
     id: 2,
-    label: "some other coderef 2",
+    label: "everything is mis-spelled",
     class_level_2_id: 1,
   },
   {
     id: 3,
-    label: "extra coderef 3derp a derp a derp ipsum ipsum looooorem",
+    label: "no more than one fire is allowed indoors at any one time",
     class_level_2_id: 2,
   },
   {
     id: 4,
-    label: "coderef 4 double plus",
+    label: "chili should have between 1 and 3 habaneros",
     class_level_2_id: 3,
   },
 ];
@@ -51,22 +51,22 @@ var RemedyTable = [
   {
     id: 1,
     class_level_3_id: 1,
-    label: "do something about 1",
+    label: "add snacks",
   },
   {
     id: 2,
     class_level_3_id: 2,
-    label: "do something about 2",
+    label: "run everything through spellcheck",
   },
   {
     id: 3,
     class_level_3_id: 3,
-    label: "do something about 3",
+    label: "extinguish excess fires",
   },
   {
     id: 4,
     class_level_3_id: 4,
-    label: "do something about 4",
+    label: "throw out chili, go to the store and purchase new set of ingredients, remake chili with between 1 and 3 habaneros",
   },
 ];
 
