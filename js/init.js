@@ -13,7 +13,7 @@ var CodeReferenceTable = [{
   },
   {
     id: 2,
-    label: "everything is mis-spelled",
+    label: "everything must be spelled correctly",
     class_level_2_id: 1,
   },
   {
@@ -26,25 +26,6 @@ var CodeReferenceTable = [{
     label: "chili should have between 1 and 3 habaneros",
     class_level_2_id: 3,
   },
-];
-
-var ObservationTable = [{
-    id: 0,
-    code_reference_id: 1,
-    measurement: 5,
-    unit: '%'
-  },
-  {
-    id: 1,
-    code_reference_id: 2,
-    measurement: 10,
-    unit: 'FT',
-  }, {
-    id: 3,
-    code_reference_id: 4,
-    measurement: 15,
-    unit: 'sqft',
-  }
 ];
 
 var RemedyTable = [
@@ -79,6 +60,28 @@ var UnitTable = [
   {name: "%"},
   {name: "see comments"},
 ]
+
+var ObservationTable = [{
+    id: 0,
+    code_reference_id: 1,
+    measurement: 5,
+    unit: '%',
+    remedy_text: RemedyTable[0].label,
+  },
+  {
+    id: 1,
+    code_reference_id: 2,
+    measurement: 10,
+    unit: 'FT',
+    remedy_text: RemedyTable[1].label,
+  }, {
+    id: 3,
+    code_reference_id: 4,
+    measurement: 15,
+    unit: 'sqft',
+    remedy_text: RemedyTable[3].label,
+  }
+];
 
 var zipperedData = zipperData(CodeReferenceTable, ObservationTable);
 filterCodeRefList();
