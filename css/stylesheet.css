@@ -17,6 +17,7 @@ body {
   flex-direction: column;
   background: var(--primary-background);
   font-family: 'helvetica';
+  overflow-y: hidden;
 }
 
 /* test class */
