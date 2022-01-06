@@ -1,4 +1,3 @@
-
 ///////////////////////////////////////////
 // UI modifications
 function appendToCodeRefList(doc, data, units) {
@@ -17,7 +16,10 @@ function clearCodeRefList() {
 
 function filterCodeRefList() {
   const filteredData = zipperedData.reduce((acc, datum) => {
-    if (datum.id && (parseInt(datum.class_level_2_id) === parseInt(selectedCL2))) {
+    if (
+      datum.id &&
+      parseInt(datum.class_level_2_id) === parseInt(selectedCL2)
+    ) {
       acc.push(datum);
     }
     return acc;
@@ -28,11 +30,13 @@ function filterCodeRefList() {
 
 function appendToObservationList(doc, observs) {
   let container = doc.getElementById("observation-list");
-  data.forEach((datum, n) => {})
+  data.forEach((datum, n) => {});
 }
 
 function setDirtyDataClass(doc, id) {
   const element = doc.getElementById(id);
+  const message = doc.getElementById("save-message");
+  message.classList.remove("hidden");
   if (!element.classList.contains("dirty-data")) {
     element.classList.add("dirty-data");
   }
@@ -40,8 +44,10 @@ function setDirtyDataClass(doc, id) {
 
 function setSavedDataClass(id) {
   const element = globalDoc.getElementById(id);
+  const message = globalDoc.getElementById("save-message");
   element.classList.remove("dirty-data");
   element.classList.add("saved-data");
+  message.classList.add("hidden");
   setTimeout(() => {
     element.classList.remove("saved-data");
   }, 1000);

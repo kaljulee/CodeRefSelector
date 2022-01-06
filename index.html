@@ -10,8 +10,12 @@
   <script src="js/components.js" charset="utf-8"></script>
 </head>
 
-<body>
+<body id="body">
+  <div id="save-bar">
+
+  <div class="dirty-data hidden" id="save-message">WARNING: YOU HAVE UNSAVED CHANGES.  DON'T CLOSE WITHOUT SAVING --></div>
   <button id="save-button" onClick="onSaveButtonClick()">save</button>
+</div>
   <div id="coderef-list">
     <button type="button" onClick="buttonClicked(this)" name="button">
       some kind of button
